@@ -1,24 +1,19 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart';
 
-import '../models/profile_model.dart';
+class Network {
+  static String BASE = 'api.github.com';
+  static String API_GET = '/users/khurshid88';
 
-class HTTPService{
-  final String profile = "https://api.github.com/users/FeruzBoymuratov";
-
-  Future <List<ProfileModel>> getProfile() async {
-    Response res = await get(Uri.parse(profile));
-
-    if(res.statusCode == 200){
-      List<dynamic> body = jsonDecode(res.body);
-
-      List<ProfileModel> infos = body.map((dynamic item) => ProfileModel.fromJson(item),
-      ).toList();
-      return infos;
-    }else{
-      throw "Infos ni chiqarib bo'lmadi!";
-    }
+  static Future<String?> GET(String api) async {
+    var uri = Uri.https(BASE, api);
+    var response = await get(uri);
+    if(response.statusCode == 200) return response.body;
+    return null;
+  }
+  static Map<String, String> paramsEmpty() {
+    Map<String, String> params = {};
+    return params;
   }
 }
